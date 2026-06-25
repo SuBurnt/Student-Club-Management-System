@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Мероприятия - {{ club.name }} - СтудКлубы{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'clubs:club_list' %}">Клубы</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'clubs:club_detail' club.id %}">{{ club.name }}</a></li>
+        <li class="breadcrumb-item active">Мероприятия</li>
+    </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-calendar-event"></i> Мероприятия клуба "{{ club.name }}"</h2>
+    <a href="{% url 'events:create_event' club.id %}" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Создать мероприятие
+    </a>
+</div>
+
+<div class="row">
+    {% for event in events %}
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ event.title }}</h5>
+                <p class="card-text">{{ event.description|truncatewords:30 }}</p>
+                <div class="mb-2">
+                    <i class="bi bi-calendar"></i> {{ event.date_time|date:"d.m.Y H:i" }}
+                </div>
+                <div class="mb-2">
+                    <i class="bi bi-geo-alt"></i> {{ event.location }}
+                </div>
+                <div class="mb-2">
+                    <i class="bi bi-people"></i> {{ event.get_registered_count }}/{{ event.max_participants }}
+                    участников
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <a href="{% url 'events:event_detail' event.id %}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-eye"></i> Подробнее
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle"></i> Мероприятий пока нет. Создайте первое!
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
