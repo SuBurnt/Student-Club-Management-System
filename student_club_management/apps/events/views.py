@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages  # ← ДОБАВИТЬ ЭТУ СТРОКУ!
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
 from apps.clubs.models import Club
 from .models import Event, EventRegistration
@@ -80,3 +81,17 @@ def create_event(request, club_id):
         'form': form,
         'club': club
     })
+
+@staff_member_required
+def delete_event(request, event_id):
+    """Удаление мероприятия (только для суперюзера)."""
+    event = get_object_or_404(Event, id=event_id)
+    club_id = event.club.id
+    
+    if request.method == 'POST':
+        event_title = event.title
+        event.delete()
+        messages.success(request, f'Мероприятие "{event_title}" удалено.')
+        return redirect('events:event_list', club_id=club_id)
+    
+    return render(request, 'events/delete_event.html', {'event': event})
