@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ event.title }} - СтудКлубы{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'clubs:club_list' %}">Клубы</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'clubs:club_detail' event.club.id %}">{{ event.club.name }}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'events:event_list' event.club.id %}">Мероприятия</a></li>
+        <li class="breadcrumb-item active">{{ event.title }}</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header">
+                <h4 class="mb-0">{{ event.title }}</h4>
+            </div>
+            <div class="card-body">
+                <p class="lead">{{ event.description }}</p>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><i class="bi bi-calendar"></i> <strong>Дата и время:</strong><br>
+                            {{ event.date_time|date:"d.m.Y" }} в {{ event.date_time|date:"H:i" }}</p>
+                        <p><i class="bi bi-geo-alt"></i> <strong>Место:</strong><br>{{ event.location }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><i class="bi bi-people"></i> <strong>Участники:</strong><br>
+                            {{ event.get_registered_count }} из {{ event.max_participants }}</p>
+                        <p><i class="bi bi-person"></i> <strong>Клуб:</strong><br>
+                            <a href="{% url 'clubs:club_detail' event.club.id %}">{{ event.club.name }}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Участники -->
+        <div class="card shadow mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-people"></i> Список участников ({{ participants|length }})</h5>
+            </div>
+            <div class="card-body">
+                {% if participants %}
+                <ul class="list-group">
+                    {% for registration in participants %}
+                    <li class="list-group-item d-flex align-items-center">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" 
+                            style="width: 32px; height: 32px; font-size: 14px;">
+                            {{ registration.user.username|first|upper }}
+                        </div>
+                        <div>
+                            {% if registration.user.get_full_name %}
+                                {{ registration.user.get_full_name }}
+                            {% else %}
+                                {{ registration.user.username }}
+                            {% endif %}
+                            <br>
+                            <small class="text-muted">@{{ registration.user.username }}</small>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted text-center">Пока никто не зарегистрировался.</p>
+                {% endif %}
+            </div>
+        </div>
+
+    <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                {% if user.is_authenticated %}
+                {% if is_registered %}
+                <div class="alert alert-success">
+                    <i class="bi bi-check-circle"></i> Вы зарегистрированы
+                </div>
+                {% else %}
+                {% if event.get_registered_count < event.max_participants %} <form method="post"
+                    action="{% url 'events:register_for_event' event.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-lg w-100">
+                        <i class="bi bi-calendar-check"></i> Зарегистрироваться
+                    </button>
+                    </form>
+                    {% else %}
+                    <div class="alert alert-danger">
+                        <i class="bi bi-x-circle"></i> Мероприятие заполнено
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    {% else %}
+                    <p class="text-muted">Войдите, чтобы зарегистрироваться</p>
+                    <a href="{% url 'accounts:login' %}" class="btn btn-primary w-100">
+                        <i class="bi bi-box-arrow-in-right"></i> Войти
+                    </a>
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
