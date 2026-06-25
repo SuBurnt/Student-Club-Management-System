@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import Club, ClubMember
 from .forms import ClubForm
 
@@ -57,3 +58,16 @@ def create_club(request):
     else:
         form = ClubForm()
     return render(request, 'clubs/create_club.html', {'form': form})
+
+@staff_member_required
+def delete_club(request, club_id):
+    """Удаление клуба (только для суперюзера)."""
+    club = get_object_or_404(Club, id=club_id)
+    
+    if request.method == 'POST':
+        club_name = club.name
+        club.delete()
+        messages.success(request, f'Клуб "{club_name}" удалён.')
+        return redirect('clubs:club_list')
+    
+    return render(request, 'clubs/delete_club.html', {'club': club})

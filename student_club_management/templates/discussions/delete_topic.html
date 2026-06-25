@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Удалить тему - СтудКлубы{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Подтверждение удаления</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <strong>Внимание!</strong> Это действие нельзя отменить.
+                </div>
+                
+                <p>Вы собираетесь удалить тему:</p>
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <h5>{{ topic.title }}</h5>
+                        <p class="mb-1">{{ topic.content|truncatewords:20 }}</p>
+                        <small class="text-muted">
+                            Автор: {{ topic.created_by.username }} |
+                            Комментариев: {{ topic.comments.count }}
+                        </small>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            <i class="bi bi-trash"></i> Да, удалить тему
+                        </button>
+                        <a href="{% url 'discussions:topic_detail' topic.id %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i> Отмена
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

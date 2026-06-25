@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Удалить мероприятие - СтудКлубы{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Подтверждение удаления</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <strong>Внимание!</strong> Это действие нельзя отменить.
+                </div>
+                
+                <p>Вы собираетесь удалить мероприятие:</p>
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <h5>{{ event.title }}</h5>
+                        <p class="mb-1">{{ event.description|truncatewords:20 }}</p>
+                        <small class="text-muted">
+                            Дата: {{ event.date_time|date:"d.m.Y H:i" }} |
+                            Место: {{ event.location }} |
+                            Зарегистрировано: {{ event.get_registered_count }}/{{ event.max_participants }}
+                        </small>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            <i class="bi bi-trash"></i> Да, удалить мероприятие
+                        </button>
+                        <a href="{% url 'events:event_detail' event.id %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i> Отмена
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import DiscussionTopic, Comment
 from .forms import DiscussionTopicForm, CommentForm
 
@@ -61,3 +62,30 @@ def create_topic(request, club_id):
         'form': form,
         'club': club
     })
+
+@staff_member_required
+def delete_topic(request, topic_id):
+    """Удаление темы обсуждения (только для суперюзера)."""
+    topic = get_object_or_404(DiscussionTopic, id=topic_id)
+    club_id = topic.club.id
+    
+    if request.method == 'POST':
+        topic_title = topic.title
+        topic.delete()
+        messages.success(request, f'Тема "{topic_title}" удалена.')
+        return redirect('discussions:topic_list', club_id=club_id)
+    
+    return render(request, 'discussions/delete_topic.html', {'topic': topic})
+
+@staff_member_required
+def delete_comment(request, comment_id):
+    """Удаление комментария (только для суперюзера)."""
+    comment = get_object_or_404(Comment, id=comment_id)
+    topic_id = comment.topic.id
+    
+    if request.method == 'POST':
+        comment.delete()
+        messages.success(request, 'Комментарий удалён.')
+        return redirect('discussions:topic_detail', topic_id=topic_id)
+    
+    return render(request, 'discussions/delete_comment.html', {'comment': comment})
