@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import Club, ClubMember
 from .forms import ClubForm
 
+
 def club_list(request):
     """Список всех клубов"""
     clubs = Club.objects.all()
@@ -11,6 +12,7 @@ def club_list(request):
     if category:
         clubs = clubs.filter(category=category)
     return render(request, 'clubs/club_list.html', {'clubs': clubs})
+
 
 def club_detail(request, club_id):
     """Детальная информация о клубе"""
@@ -25,6 +27,7 @@ def club_detail(request, club_id):
         'is_member': is_member
     })
 
+
 @login_required
 def join_club(request, club_id):
     """Присоединиться к клубу"""
@@ -37,6 +40,7 @@ def join_club(request, club_id):
         )
         messages.success(request, f'Вы присоединились к клубу "{club.name}"')
     return redirect('clubs:club_detail', club_id=club.id)
+
 
 @login_required
 def create_club(request):

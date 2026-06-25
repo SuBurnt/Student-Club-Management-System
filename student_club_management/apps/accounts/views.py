@@ -28,7 +28,9 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f'Добро пожаловать, {user.first_name or user.username}!')
+            messages.success(
+                request, f'Добро пожаловать, {
+                    user.first_name or user.username}!')
             return redirect('clubs:club_list')
         else:
             messages.error(request, 'Неверное имя пользователя или пароль.')

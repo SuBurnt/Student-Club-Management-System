@@ -5,7 +5,7 @@ from .models import CustomUser
 
 class CustomUserCreationForm(UserCreationForm):
     """Форма регистрации пользователя."""
-    
+
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'student_id', 'first_name', 'last_name']

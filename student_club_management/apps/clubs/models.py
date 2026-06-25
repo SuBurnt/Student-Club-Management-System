@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 class Club(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -12,7 +13,7 @@ class Club(models.Model):
         ('other', 'Другое')
     ])
     owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, 
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='owned_clubs'
     )
@@ -22,22 +23,24 @@ class Club(models.Model):
         through='ClubMember',
         related_name='clubs'
     )
-    
+
     class Meta:
         verbose_name_plural = "Clubs"
-    
+
     def __str__(self):
         return self.name
 
+
 class ClubMember(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     role = models.CharField(max_length=20, choices=[
         ('admin', 'Администратор'),
         ('member', 'Участник')
     ], default='member')
     joined_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         unique_together = ['user', 'club']
-        

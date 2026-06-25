@@ -20,7 +20,7 @@ def topic_detail(request, topic_id):
     """Просмотр темы и комментариев."""
     topic = get_object_or_404(DiscussionTopic, id=topic_id)
     comments = Comment.objects.filter(topic=topic).select_related('user')
-    
+
     comment_form = CommentForm()
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)
@@ -31,7 +31,7 @@ def topic_detail(request, topic_id):
             comment.save()
             messages.success(request, 'Комментарий добавлен!')
             return redirect('discussions:topic_detail', topic_id=topic.id)
-            
+
     return render(request, 'discussions/topic_detail.html', {
         'topic': topic,
         'comments': comments,
@@ -44,7 +44,7 @@ def create_topic(request, club_id):
     """Создание новой темы обсуждения."""
     from apps.clubs.models import Club
     club = get_object_or_404(Club, id=club_id)
-    
+
     if request.method == 'POST':
         form = DiscussionTopicForm(request.POST)
         if form.is_valid():
@@ -56,7 +56,7 @@ def create_topic(request, club_id):
             return redirect('discussions:topic_detail', topic_id=topic.id)
     else:
         form = DiscussionTopicForm()
-        
+
     return render(request, 'discussions/create_topic.html', {
         'form': form,
         'club': club

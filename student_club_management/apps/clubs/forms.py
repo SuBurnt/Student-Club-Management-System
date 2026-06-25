@@ -4,7 +4,7 @@ from .models import Club
 
 class ClubForm(forms.ModelForm):
     """Форма для создания и редактирования клуба."""
-    
+
     class Meta:
         model = Club
         fields = ['name', 'description', 'category']
