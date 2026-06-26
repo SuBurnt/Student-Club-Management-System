@@ -4,10 +4,15 @@ from .models import Event
 
 class EventForm(forms.ModelForm):
     """Форма для создания мероприятия."""
-    
+
     class Meta:
         model = Event
-        fields = ['title', 'description', 'date_time', 'location', 'max_participants']
+        fields = [
+            'title',
+            'description',
+            'date_time',
+            'location',
+            'max_participants']
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control',

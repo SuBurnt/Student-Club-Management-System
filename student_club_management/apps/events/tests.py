@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class EventModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
@@ -28,20 +29,20 @@ class EventModelTest(TestCase):
             location='Room 101',
             max_participants=20
         )
-    
+
     def test_event_creation(self):
         """Тест создания мероприятия"""
         self.assertEqual(self.event.title, 'Workshop')
         self.assertEqual(self.event.max_participants, 20)
-    
+
     def test_get_registered_count(self):
         """Тест подсчёта зарегистрированных"""
         self.assertEqual(self.event.get_registered_count(), 0)
-        
+
         EventRegistration.objects.create(
             event=self.event,
             user=self.user,
             status='confirmed'
         )
-        
+
         self.assertEqual(self.event.get_registered_count(), 1)

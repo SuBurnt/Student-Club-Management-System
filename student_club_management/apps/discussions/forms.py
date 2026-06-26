@@ -4,7 +4,7 @@ from .models import DiscussionTopic, Comment
 
 class DiscussionTopicForm(forms.ModelForm):
     """Форма для создания темы обсуждения."""
-    
+
     class Meta:
         model = DiscussionTopic
         fields = ['title', 'content']
@@ -23,7 +23,7 @@ class DiscussionTopicForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
     """Форма для добавления комментария."""
-    
+
     class Meta:
         model = Comment
         fields = ['content']
