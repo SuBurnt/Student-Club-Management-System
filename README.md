@@ -22,10 +22,13 @@
 
 ## Установка
 
-1. Клонируйте репозиторий через терминал:
-git clone [https://github.com/SuBurnt/Student-Club-Management-System.git](https://github.com/SuBurnt/Student-Club-Management-System.git)  
+1. Клонируйте репозиторий через терминал:  
+git clone [https://github.com/SuBurnt/Student-Club-Management-System.git](https://github.com/SuBurnt/Student-Club-Management-System.git)
+2. Установите необходимые пакеты  
+pip install -r requirements.txt  
+3. Перейдите к нужной папке  
 cd student_club_management  
-2. Запустите сервер:  
+4. Запустите сервер:  
 python manage.py runserver  
-3. Скопируйте адрес и вставьте в браузер:  
+5. Скопируйте адрес и вставьте в браузер:  
 Starting development server at [***http://127.0.0.1:8000/***](http://127.0.0.1:8000/)
