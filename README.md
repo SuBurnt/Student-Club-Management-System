@@ -24,7 +24,7 @@
 
 1. Клонируйте репозиторий через терминал:
 git clone [https://github.com/SuBurnt/Student-Club-Management-System.git](https://github.com/SuBurnt/Student-Club-Management-System.git)  
-cd student-club-management  
+cd student_club_management  
 2. Запустите сервер:  
 python manage.py runserver  
 3. Скопируйте адрес и вставьте в браузер:  
