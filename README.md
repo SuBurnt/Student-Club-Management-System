@@ -28,7 +28,9 @@ git clone [https://github.com/SuBurnt/Student-Club-Management-System.git](https:
 pip install -r requirements.txt  
 3. Перейдите к нужной папке  
 cd student_club_management  
-4. Запустите сервер:  
+4. Создайте миграции  
+python manage.py migrate  
+5. Запустите сервер:  
 python manage.py runserver  
-5. Скопируйте адрес и вставьте в браузер:  
+6. Скопируйте адрес и вставьте в браузер:  
 Starting development server at [***http://127.0.0.1:8000/***](http://127.0.0.1:8000/)
